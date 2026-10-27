@@ -25,10 +25,14 @@
       return;
     }
     var f = document.createElement('iframe');
-    f.setAttribute('allowfullscreen', '');
     f.setAttribute('allow', 'autoplay; fullscreen');
     f.src = u;
     document.body.appendChild(f);
+
+    // Фокус, пришедший в обёртку (кнопка «Управлять плеером»), сразу отдаём плееру — иначе пульт до него не доходит.
+    function pass() { try { f.focus(); if (f.contentWindow) { f.contentWindow.focus(); } } catch (x) {} }
+    window.addEventListener('focus', pass);
+    f.addEventListener('load', function () { if (document.hasFocus()) { pass(); } });
   })();
 </script>
 </body>
