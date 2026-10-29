@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="referrer" content="origin">
+<meta name="referrer" content="no-referrer">
 <title>Flicks player</title>
 <style>
   html, body { margin: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
@@ -12,8 +12,8 @@
 </head>
 <body>
 <script>
-  // Обёртка для Flicks на webOS: приложение живёт на file://, и плееры не получают Referer.
-  // Адрес плеера передаётся во фрагменте (#u=...), чтобы он не уходил на сервер и в Referer.
+  // Обёртка для Flicks на webOS: один адрес плеера во фрагменте (#u=...), чтобы он не уходил на сервер.
+  // Список источников и переключение — в приложении (экран фильма), Back возвращает туда.
   (function () {
     var m = /[#&]u=([^&]+)/.exec(location.hash);
     var u = m ? decodeURIComponent(m[1]) : '';
@@ -26,6 +26,8 @@
     }
     var f = document.createElement('iframe');
     f.setAttribute('allow', 'autoplay; fullscreen');
+    f.setAttribute('allowfullscreen', '');
+    f.setAttribute('referrerpolicy', 'no-referrer');
     f.src = u;
     document.body.appendChild(f);
 
